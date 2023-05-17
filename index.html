@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title><index class="html"></index></title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    #video-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #000;
+    }
+
+    #video {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
+  </style>
+</head>
+<body>
+  <div id="video-container">
+    <video id="video" autoplay muted playsinline></video>
+  </div>
+  <script>
+    // Function to adjust video size based on aspect ratio
+    function adjustVideoSize() {
+      const videoContainer = document.getElementById('video-container');
+      const video = document.getElementById('video');
+      const aspectRatio = 9 / 16;
+      const screenWidth = window.innerWidth;
+      const screenHeight = window.innerHeight;
+
+      if (screenWidth / screenHeight > aspectRatio) {
+        video.style.width = screenHeight * aspectRatio + 'px';
+        video.style.height = screenHeight + 'px';
+      } else {
+        video.style.width = screenWidth + 'px';
+        video.style.height = screenWidth / aspectRatio + 'px';
+      }
+    }
+
+    // Function to play video in fullscreen mode
+    function playVideoFullscreen() {
+      const video = document.getElementById('video');
+      const videoContainer = document.getElementById('video-container');
+
+      if (video.requestFullscreen) {
+        video.requestFullscreen();
+      } else if (video.mozRequestFullScreen) {
+        video.mozRequestFullScreen();
+      } else if (video.webkitRequestFullscreen) {
+        video.webkitRequestFullscreen();
+      } else if (video.msRequestFullscreen) {
+        video.msRequestFullscreen();
+      }
+    }
+
+    // Call the adjustVideoSize function initially and on window resize
+    adjustVideoSize();
+    window.addEventListener('resize', adjustVideoSize);
+
+    // Play the video automatically and in fullscreen mode
+    document.addEventListener('DOMContentLoaded', function() {
+      const video = document.getElementById('video');
+      const videoSource = "Moonflower 3.0.mp4"; // Replace with the actual path to your video file
+      video.src = videoSource;
+
+      video.addEventListener('canplay', function() {
+        video.play();
+        playVideoFullscreen();
+      });
+    });
+  </script>
+</body>
+</html>
